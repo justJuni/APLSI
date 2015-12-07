@@ -17,7 +17,7 @@ public class Generator
 		ArrayList<Line> lines = new ArrayList<Line>(n);
 		for(int i = 0; i < n; i++)
 		{
-			lines.add(new Line(false, rand.nextInt(1000000 - 25) + 1, rand.nextInt(1000000 - 25) + 1));
+			lines.add(new Line(false, rand.nextInt(1000000 - 25 + 1), rand.nextInt(1000000 - 25 + 1)));
 		}
 		return lines;
 	}
@@ -32,7 +32,7 @@ public class Generator
 		ArrayList<Line> lines = new ArrayList<Line>(n);
 		for(int i = 0; i < n; i++)
 		{
-			lines.add(new Line(true, rand.nextInt(1000000 - 25) + 1, rand.nextInt(1000000 - 25) + 1));
+			lines.add(new Line(true, rand.nextInt(1000000 - 25 + 1), rand.nextInt(1000000 - 25 + 1) + 25));
 		}
 		return lines;
 	}

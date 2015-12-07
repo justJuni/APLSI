@@ -23,7 +23,8 @@ public class Line {
 		startY = sY;
 		if (isVertical) 
 		{
-			endY = startY + 25;
+			endY = sY;
+			startY = endY - 25;
 			endX = startX;
 		} 
 		else 
