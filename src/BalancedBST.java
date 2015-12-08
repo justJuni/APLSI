@@ -1,7 +1,7 @@
 /*
  * taken from rosettacode.org
  */
-public class AVLtree {
+public class BalancedBST {
  
     private Node root;
  
@@ -77,6 +77,10 @@ public class AVLtree {
                 rebalance(parent);
             }
         }
+    }
+    
+    public int find(Node findKey){
+    	return findKey(findKey, root);
     }
  
     private void rebalance(Node n) {
@@ -187,24 +191,25 @@ public class AVLtree {
         }
     } 
     
-    private T find( T x, Node sRoot)
+    private int findKey( Node x, Node sRoot)
     {
     	//if the root is null
     	if(sRoot == null)
     		//return null because nothing is there
-    		return null;
-    	int compareResult = x.compareTo(sRoot.element);			//value of the compare to
+    		return 0;
+    	//value of the compare to
+    	int compareResult = Integer.compare(x.key, sRoot.key);
     	//if the compare result is less than 0
     	if(compareResult<0)
     		//recursively run find on the left node
-    		return find(x, sRoot.left);
+    		return findKey(x, sRoot.left);
     	//if the compare result is greater than 0
     	else if(compareResult > 0)
     		//recursively run find on the right node
-    		return find( x, sRoot.right);
+    		return findKey( x, sRoot.right);
     	//else x has been found
     	else
     		//return element at root
-    		return sRoot.element;
+    		return sRoot.key;
     }
  }
