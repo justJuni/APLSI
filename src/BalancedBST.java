@@ -1,5 +1,6 @@
 /*
- * taken from rosettacode.org
+ * Taken from rosettacode.org
+ * No author attributed where we pulled this from.
  */
 public class BalancedBST {
  
