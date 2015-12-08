@@ -105,5 +105,14 @@ public class Main {
 		
 		
 	}
-
+	
+	/*
+	 private Point[] getIntersections(ArrayList<Line> vertical, ArrayList<Line> Horizontal)
+	 {
+	    BalancedBST bst = new BalancedBST();
+	    for(int k = 0; k<vertical.size(); k++)
+	    	bst.insert(vertical.get(k));
+		 return null;
+	 }
+	 */
 }
