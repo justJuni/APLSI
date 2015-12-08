@@ -1,218 +1,210 @@
 /*
- *  Java Program to Implement Self Balancing Binary Search Tree
- *  From sanfoundry.com written by Manish Bhojasia
+ * taken from rosettacode.org
  */
+public class AVLtree {
  
- import java.util.Scanner;
+    private Node root;
  
- /* Class SBBSTNode */
- class SBBSTNode
- {    
-     SBBSTNode left, right;
-     int data;
-     int height;
+    private class Node {
+        private int key;
+        private int balance;
+        private Node left, right, parent;
  
-     /* Constructor */
-     public SBBSTNode()
-     {
-         left = null;
-         right = null;
-         data = 0;
-         height = 0;
-     }
-     /* Constructor */
-     public SBBSTNode(int n)
-     {
-         left = null;
-         right = null;
-         data = n;
-         height = 0;
-     }     
- }
+        Node(int k, Node p) {
+            key = k;
+            parent = p;
+        }
+    }
  
- /* Class SelfBalancingBinarySearchTree */
- class SelfBalancingBinarySearchTree
- {
-     private SBBSTNode root;     
+    public boolean insert(int key) {
+        if (root == null)
+            root = new Node(key, null);
+        else {
+            Node n = root;
+            Node parent;
+            while (true) {
+                if (n.key == key)
+                    return false;
  
-     /* Constructor */
-     public SelfBalancingBinarySearchTree()
-     {
-         root = null;
-     }
+                parent = n;
  
-     /* Function to check if tree is empty */
-     public boolean isEmpty()
-     {
-         return root == null;
-     }
+                boolean goLeft = n.key > key;
+                n = goLeft ? n.left : n.right;
  
-     /* Make the tree logically empty */
-     public void clear()
-     {
-         root = null;
-     }
-     /* Function to insert data */
-     public void insert(int data)
-     {
-         root = insert(data, root);
-     }
-     /* Function to get height of node */
-     private int height(SBBSTNode t )
-     {
-         return t == null ? -1 : t.height;
-     }
-     /* Function to max of left/right node */
-     private int max(int lhs, int rhs)
-     {
-         return lhs > rhs ? lhs : rhs;
-     }
-     /* Function to insert data recursively */
-     private SBBSTNode insert(int x, SBBSTNode t)
-     {
-         if (t == null)
-             t = new SBBSTNode(x);
-         else if (x < t.data)
-         {
-             t.left = insert( x, t.left );
-             if (height( t.left ) - height( t.right ) == 2)
-                 if (x < t.left.data)
-                     t = rotateWithLeftChild( t );
-                 else
-                     t = doubleWithLeftChild( t );
-         }
-         else if (x > t.data)
-         {
-             t.right = insert( x, t.right );
-             if (height( t.right ) - height( t.left ) == 2)
-                 if (x > t.right.data)
-                     t = rotateWithRightChild( t );
-                 else
-                     t = doubleWithRightChild( t );
-         }
-         else
-           ;  // Duplicate; do nothing
-         t.height = max( height( t.left ), height( t.right ) ) + 1;
-         return t;
-     }
-     /* Rotate binary tree node with left child */     
-     private SBBSTNode rotateWithLeftChild(SBBSTNode k2)
-     {
-         SBBSTNode k1 = k2.left;
-         k2.left = k1.right;
-         k1.right = k2;
-         k2.height = max( height( k2.left ), height( k2.right ) ) + 1;
-         k1.height = max( height( k1.left ), k2.height ) + 1;
-         return k1;
-     }
+                if (n == null) {
+                    if (goLeft) {
+                        parent.left = new Node(key, parent);
+                    } else {
+                        parent.right = new Node(key, parent);
+                    }
+                    rebalance(parent);
+                    break;
+                }
+            }
+        }
+        return true;
+    }
  
-     /* Rotate binary tree node with right child */
-     private SBBSTNode rotateWithRightChild(SBBSTNode k1)
-     {
-         SBBSTNode k2 = k1.right;
-         k1.right = k2.left;
-         k2.left = k1;
-         k1.height = max( height( k1.left ), height( k1.right ) ) + 1;
-         k2.height = max( height( k2.right ), k1.height ) + 1;
-         return k2;
-     }
-     /**
-      * Double rotate binary tree node: first left child
-      * with its right child; then node k3 with new left child */
-     private SBBSTNode doubleWithLeftChild(SBBSTNode k3)
-     {
-         k3.left = rotateWithRightChild( k3.left );
-         return rotateWithLeftChild( k3 );
-     }
-     /**
-      * Double rotate binary tree node: first right child
-      * with its left child; then node k1 with new right child */      
-     private SBBSTNode doubleWithRightChild(SBBSTNode k1)
-     {
-         k1.right = rotateWithLeftChild( k1.right );
-         return rotateWithRightChild( k1 );
-     }    
-     /* Functions to count number of nodes */
-     public int countNodes()
-     {
-         return countNodes(root);
-     }
-     private int countNodes(SBBSTNode r)
-     {
-         if (r == null)
-             return 0;
-         else
-         {
-             int l = 1;
-             l += countNodes(r.left);
-             l += countNodes(r.right);
-             return l;
-         }
-     }
-     /* Functions to search for an element */
-     public boolean search(int val)
-     {
-         return search(root, val);
-     }
-     private boolean search(SBBSTNode r, int val)
-     {
-         boolean found = false;
-         while ((r != null) && !found)
-         {
-             int rval = r.data;
-             if (val < rval)
-                 r = r.left;
-             else if (val > rval)
-                 r = r.right;
-             else
-             {
-                 found = true;
-                 break;
-             }
-             found = search(r, val);
-         }
-         return found;
-     }
-     /* Function for inorder traversal */
-     public void inorder()
-     {
-         inorder(root);
-     }
-     private void inorder(SBBSTNode r)
-     {
-         if (r != null)
-         {
-             inorder(r.left);
-             System.out.print(r.data +" ");
-             inorder(r.right);
-         }
-     }
-     /* Function for preorder traversal */
-     public void preorder()
-     {
-         preorder(root);
-     }
-     private void preorder(SBBSTNode r)
-     {
-         if (r != null)
-         {
-             System.out.print(r.data +" ");
-             preorder(r.left);             
-             preorder(r.right);
-         }
-     }
-     /* Function for postorder traversal */
-     public void postorder()
-     {
-         postorder(root);
-     }
-     private void postorder(SBBSTNode r)
-     {
-         if (r != null)
-         {
-             postorder(r.left);             
-             postorder(r.right);
-             System.out.print(r.data +" ");
-         }
-     }     
+    public void delete(int delKey) {
+        if (root == null)
+            return;
+        Node n = root;
+        Node parent = root;
+        Node delNode = null;
+        Node child = root;
+ 
+        while (child != null) {
+            parent = n;
+            n = child;
+            child = delKey >= n.key ? n.right : n.left;
+            if (delKey == n.key)
+                delNode = n;
+        }
+ 
+        if (delNode != null) {
+            delNode.key = n.key;
+ 
+            child = n.left != null ? n.left : n.right;
+ 
+            if (root.key == delKey) {
+                root = child;
+            } else {
+                if (parent.left == n) {
+                    parent.left = child;
+                } else {
+                    parent.right = child;
+                }
+                rebalance(parent);
+            }
+        }
+    }
+ 
+    private void rebalance(Node n) {
+        setBalance(n);
+ 
+        if (n.balance == -2) {
+            if (height(n.left.left) >= height(n.left.right))
+                n = rotateRight(n);
+            else
+                n = rotateLeftThenRight(n);
+ 
+        } else if (n.balance == 2) {
+            if (height(n.right.right) >= height(n.right.left))
+                n = rotateLeft(n);
+            else
+                n = rotateRightThenLeft(n);
+        }
+ 
+        if (n.parent != null) {
+            rebalance(n.parent);
+        } else {
+            root = n;
+        }
+    }
+ 
+    private Node rotateLeft(Node a) {
+ 
+        Node b = a.right;
+        b.parent = a.parent;
+ 
+        a.right = b.left;
+ 
+        if (a.right != null)
+            a.right.parent = a;
+ 
+        b.left = a;
+        a.parent = b;
+ 
+        if (b.parent != null) {
+            if (b.parent.right == a) {
+                b.parent.right = b;
+            } else {
+                b.parent.left = b;
+            }
+        }
+ 
+        setBalance(a, b);
+ 
+        return b;
+    }
+ 
+    private Node rotateRight(Node a) {
+ 
+        Node b = a.left;
+        b.parent = a.parent;
+ 
+        a.left = b.right;
+ 
+        if (a.left != null)
+            a.left.parent = a;
+ 
+        b.right = a;
+        a.parent = b;
+ 
+        if (b.parent != null) {
+            if (b.parent.right == a) {
+                b.parent.right = b;
+            } else {
+                b.parent.left = b;
+            }
+        }
+ 
+        setBalance(a, b);
+ 
+        return b;
+    }
+ 
+    private Node rotateLeftThenRight(Node n) {
+        n.left = rotateLeft(n.left);
+        return rotateRight(n);
+    }
+ 
+    private Node rotateRightThenLeft(Node n) {
+        n.right = rotateRight(n.right);
+        return rotateLeft(n);
+    }
+ 
+    private int height(Node n) {
+        if (n == null)
+            return -1;
+        return 1 + Math.max(height(n.left), height(n.right));
+    }
+ 
+    private void setBalance(Node... nodes) {
+        for (Node n : nodes)
+            n.balance = height(n.right) - height(n.left);
+    }
+ 
+    public void printBalance() {
+        printBalance(root);
+    }
+ 
+    private void printBalance(Node n) {
+        if (n != null) {
+            printBalance(n.left);
+            System.out.printf("%s ", n.balance);
+            printBalance(n.right);
+        }
+    } 
+    
+    private T find( T x, Node sRoot)
+    {
+    	//if the root is null
+    	if(sRoot == null)
+    		//return null because nothing is there
+    		return null;
+    	int compareResult = x.compareTo(sRoot.element);			//value of the compare to
+    	//if the compare result is less than 0
+    	if(compareResult<0)
+    		//recursively run find on the left node
+    		return find(x, sRoot.left);
+    	//if the compare result is greater than 0
+    	else if(compareResult > 0)
+    		//recursively run find on the right node
+    		return find( x, sRoot.right);
+    	//else x has been found
+    	else
+    		//return element at root
+    		return sRoot.element;
+    }
  }
