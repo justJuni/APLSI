@@ -97,4 +97,17 @@ public class Main {
 		smartEnd = System.nanoTime();
 		System.out.println("Smart implementation ran in: " + (smartEnd - smartStart) + " nanoseconds for 20000 elements");	
 	}
+<<<<<<< HEAD:src/Main.java
+=======
+	
+	/*
+	 private Point[] getIntersections(ArrayList<Line> vertical, ArrayList<Line> Horizontal)
+	 {
+	    BalancedBST bst = new BalancedBST();
+	    for(int k = 0; k<vertical.size(); k++)
+	    	bst.insert(vertical.get(k));
+		 return null;
+	 }
+	 */
+>>>>>>> e40f562f07b420dc63600e74c08a20df21605fcc:Main.java
 }
