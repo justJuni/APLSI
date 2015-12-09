@@ -35,6 +35,5 @@ public class Generator
 			lines.add(new Line(true, rand.nextInt(1000000 - 25 + 1), rand.nextInt(1000000 - 25 + 1) + 25));
 		}
 		return lines;
-	}
-	
+	}	
 }

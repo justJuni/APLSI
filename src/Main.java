@@ -1,18 +1,12 @@
 import java.util.ArrayList;
 
-
 public class Main {
 
 	public static void main(String[] args) {
-		long bruteStart;
-		long bruteEnd;
-		long smartStart;
-		long smartEnd;
+		long bruteStart, bruteEnd, smartStart, smartEnd;
 		
-		ArrayList<Line> vert = Generator.generateVerticalLines(10);
-		ArrayList<Line> horiz = Generator.generateHorizontalLines(10);
-		ArrayList<LinePair> bruteLines;
-		ArrayList<LinePair> smartLines;
+		ArrayList<Line> vert = Generator.generateVerticalLines(10), horiz = Generator.generateHorizontalLines(10);
+		ArrayList<LinePair> bruteLines, smartLines;
 		
 		bruteStart = System.nanoTime();
 		bruteLines = BruteForce.calculatePairs(10, vert, horiz);
@@ -101,9 +95,6 @@ public class Main {
 		smartStart = System.nanoTime();
 		//Run our code here.
 		smartEnd = System.nanoTime();
-		System.out.println("Smart implementation ran in: " + (smartEnd - smartStart) + " nanoseconds for 20000 elements");
-		
-		
+		System.out.println("Smart implementation ran in: " + (smartEnd - smartStart) + " nanoseconds for 20000 elements");	
 	}
-
 }

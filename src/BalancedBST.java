@@ -3,20 +3,24 @@
  * No author attributed where we pulled this from.
  */
 public class BalancedBST {
+	private Node root;
+//    private int key;
  
-    private Node root;
- 
-    private class Node {
-        private int key;
-        private int balance;
-        private Node left, right, parent;
- 
-        Node(int k, Node p) {
-            key = k;
-            parent = p;
-        }
-    }
- 
+//    private class Node {
+//        private int key;
+//        private int balance;
+//        private Node left, right, parent;
+// 
+//        Node(int k, Node p) {
+//            key = k;
+//            parent = p;
+//        }
+//    }
+//    
+//    public BalancedBST(){
+//    	root = new Node(key, null);
+//    }
+    
     public boolean insert(int key) {
         if (root == null)
             root = new Node(key, null);
@@ -24,19 +28,19 @@ public class BalancedBST {
             Node n = root;
             Node parent;
             while (true) {
-                if (n.key == key)
+                if (n.getElement() == key)
                     return false;
  
                 parent = n;
  
-                boolean goLeft = n.key > key;
-                n = goLeft ? n.left : n.right;
+                boolean goLeft = n.getElement() > key;
+                n = goLeft ? n.getLeft() : n.getRight();
  
                 if (n == null) {
                     if (goLeft) {
-                        parent.left = new Node(key, parent);
+                        parent.setLeft(new Node(key, parent));
                     } else {
-                        parent.right = new Node(key, parent);
+                        parent.setRight(new Node(key, parent));
                     }
                     rebalance(parent);
                     break;
@@ -57,51 +61,51 @@ public class BalancedBST {
         while (child != null) {
             parent = n;
             n = child;
-            child = delKey >= n.key ? n.right : n.left;
-            if (delKey == n.key)
+            child = delKey >= n.getElement() ? n.getRight() : n.getLeft();
+            if (delKey == n.getElement())
                 delNode = n;
         }
  
         if (delNode != null) {
-            delNode.key = n.key;
+            delNode.setElement(n.getElement());
  
-            child = n.left != null ? n.left : n.right;
+            child = n.getLeft() != null ? n.getLeft(): n.getRight();
  
-            if (root.key == delKey) {
+            if (root.getElement() == delKey) {
                 root = child;
             } else {
-                if (parent.left == n) {
-                    parent.left = child;
+                if (parent.getLeft() == n) {
+                    parent.setLeft(child);
                 } else {
-                    parent.right = child;
+                    parent.setRight(child);
                 }
                 rebalance(parent);
             }
         }
     }
     
-    public int find(Node findKey){
+    public int find(int findKey){
     	return findKey(findKey, root);
     }
  
     private void rebalance(Node n) {
         setBalance(n);
  
-        if (n.balance == -2) {
-            if (height(n.left.left) >= height(n.left.right))
+        if (n.getBalance() == -2) {
+            if (height(n.getLeft().getLeft()) >= height(n.getLeft().getRight()))
                 n = rotateRight(n);
             else
                 n = rotateLeftThenRight(n);
  
-        } else if (n.balance == 2) {
-            if (height(n.right.right) >= height(n.right.left))
+        } else if (n.getBalance() == 2) {
+            if (height(n.getRight().getRight()) >= height(n.getRight().getLeft()))
                 n = rotateLeft(n);
             else
                 n = rotateRightThenLeft(n);
         }
  
-        if (n.parent != null) {
-            rebalance(n.parent);
+        if (n.getParent() != null) {
+            rebalance(n.getParent());
         } else {
             root = n;
         }
@@ -109,75 +113,70 @@ public class BalancedBST {
  
     private Node rotateLeft(Node a) {
  
-        Node b = a.right;
-        b.parent = a.parent;
+        Node b = a.getRight();
+        b.setParent(a.getParent());
  
-        a.right = b.left;
+        a.setRight(b.getLeft());
  
-        if (a.right != null)
-            a.right.parent = a;
+        if (a.getRight() != null)
+            a.getRight().setParent(a);
  
-        b.left = a;
-        a.parent = b;
+        b.setLeft(a);
+        a.setParent(b);
  
-        if (b.parent != null) {
-            if (b.parent.right == a) {
-                b.parent.right = b;
+        if (b.getParent() != null) {
+            if (b.getParent().getRight() == a) {
+                b.getParent().setRight(b);
             } else {
-                b.parent.left = b;
+                b.getParent().setLeft(b);
             }
         }
- 
         setBalance(a, b);
- 
         return b;
     }
  
     private Node rotateRight(Node a) {
  
-        Node b = a.left;
-        b.parent = a.parent;
+        Node b = a.getLeft();
+        b.setParent(a.getParent());
+        a.setLeft(b.getRight());
  
-        a.left = b.right;
+        if (a.getLeft() != null)
+            a.getLeft().setParent(a);
  
-        if (a.left != null)
-            a.left.parent = a;
+        b.setRight(a);
+        a.setParent(b);
  
-        b.right = a;
-        a.parent = b;
- 
-        if (b.parent != null) {
-            if (b.parent.right == a) {
-                b.parent.right = b;
+        if (b.getParent() != null) {
+            if (b.getParent().getRight() == a) {
+                b.getParent().setRight(b);
             } else {
-                b.parent.left = b;
+                b.getParent().setLeft(b);
             }
         }
- 
         setBalance(a, b);
- 
         return b;
     }
  
     private Node rotateLeftThenRight(Node n) {
-        n.left = rotateLeft(n.left);
+        n.setLeft(rotateLeft(n.getLeft()));
         return rotateRight(n);
     }
  
     private Node rotateRightThenLeft(Node n) {
-        n.right = rotateRight(n.right);
+        n.setRight(rotateRight(n.getRight()));
         return rotateLeft(n);
     }
  
     private int height(Node n) {
         if (n == null)
             return -1;
-        return 1 + Math.max(height(n.left), height(n.right));
+        return 1 + Math.max(height(n.getLeft()), height(n.getRight()));
     }
  
     private void setBalance(Node... nodes) {
         for (Node n : nodes)
-            n.balance = height(n.right) - height(n.left);
+            n.setBalance(height(n.getRight()) - height(n.getLeft()));
     }
  
     public void printBalance() {
@@ -186,31 +185,31 @@ public class BalancedBST {
  
     private void printBalance(Node n) {
         if (n != null) {
-            printBalance(n.left);
-            System.out.printf("%s ", n.balance);
-            printBalance(n.right);
+            printBalance(n.getLeft());
+            System.out.printf("%s ", n.getBalance());
+            printBalance(n.getRight());
         }
     } 
     
-    private int findKey( Node x, Node sRoot)
+    private int findKey( int x, Node sRoot)
     {
     	//if the root is null
     	if(sRoot == null)
     		//return null because nothing is there
     		return 0;
     	//value of the compare to
-    	int compareResult = Integer.compare(x.key, sRoot.key);
+    	int compareResult = Integer.compare(x, sRoot.getElement());
     	//if the compare result is less than 0
     	if(compareResult<0)
     		//recursively run find on the left node
-    		return findKey(x, sRoot.left);
+    		return findKey(x, sRoot.getLeft());
     	//if the compare result is greater than 0
     	else if(compareResult > 0)
     		//recursively run find on the right node
-    		return findKey( x, sRoot.right);
+    		return findKey( x, sRoot.getRight());
     	//else x has been found
     	else
     		//return element at root
-    		return sRoot.key;
+    		return sRoot.getElement();
     }
  }

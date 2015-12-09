@@ -1,7 +1,8 @@
 import java.util.ArrayList;
 
 //Andrew McMullen
-public class BruteForce {
+public class BruteForce
+{
 	
 	public static ArrayList<LinePair> generateAndCalculatePairs(int n)
 	{

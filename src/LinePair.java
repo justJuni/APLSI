@@ -1,8 +1,8 @@
 //Andrew McMullen
-public class LinePair {
+public class LinePair
+{
 
-	public Line line1;
-	public Line line2;
+	public Line line1, line2;
 	
 	public LinePair(Line l1, Line l2)
 	{
