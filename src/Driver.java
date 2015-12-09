@@ -1,10 +1,8 @@
-
-
 import java.awt.Point;
 import java.util.ArrayList;
 
 /**
- * The driver for the project
+ * driver class for the line sweep algorithm project
  */
 public class Driver
 {
@@ -19,13 +17,13 @@ public class Driver
 		long smartStart;
 		long smartEnd;
     	
-        Line[] lines = LineGenerator.generateLines(10, 100);
-        Line[] lines1 = LineGenerator.generateLines(100, 100);
-        Line[] lines2 = LineGenerator.generateLines(500, 100);
-        Line[] lines3 = LineGenerator.generateLines(1000, 100);
-        Line[] lines4 = LineGenerator.generateLines(2000, 100);
-        Line[] lines5 = LineGenerator.generateLines(10000, 100);
-        Line[] lines6 = LineGenerator.generateLines(20000, 100);
+        Line[] lines = Generator.generate(100, 10);
+        Line[] lines1 = Generator.generate(100, 100);
+        Line[] lines2 = Generator.generate(100, 500);
+        Line[] lines3 = Generator.generate(100, 1000);
+        Line[] lines4 = Generator.generate(100, 2000);
+        Line[] lines5 = Generator.generate(100, 10000);
+        Line[] lines6 = Generator.generate(100, 20000);
         
         //10 lines
         bruteStart = System.nanoTime();
@@ -105,10 +103,4 @@ public class Driver
 		System.out.println("Smart implementation ran in: " + (smartEnd - smartStart) + " nanoseconds for 20000 lines");
     
     }
-    
-    private static void printPoint(Point p)
-    {
-        System.out.println("("+p.getX()+","+p.getY()+")");
-    }
-
 }

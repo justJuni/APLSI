@@ -19,7 +19,7 @@ public class SweepLine
     public ArrayList<Point> solve(Line[] lines)
     {
         answer = new ArrayList<Point>();
-        createQueue(lines);
+        createQueue(lines);            
         processQueue();
         return answer;
     }
@@ -52,10 +52,6 @@ public class SweepLine
     private void processQueue()
     {
         TreeSet<Line> tree = new TreeSet<Line>(new VerticalComparator());
-        Line l1 = new Line(3,4,false);
-        Line l2 = new Line(3,4,false);
-        tree.add(l1);
-        tree.add(l2);
         while(!eventQueue.isEmpty())
         {
             EndPoint p = eventQueue.poll();
@@ -95,7 +91,7 @@ public class SweepLine
             if(l1.point1().y() > l2.point1().y())
                 return 1;
             
-            return 0;
+            return -1;
             
         }
         
@@ -116,9 +112,12 @@ public class SweepLine
                     return -1;
                 return 1;
             }
-                           
-            
-            return 0;
+            else
+            {
+                if(!p2.isEnd())
+                    return 1;
+                return -1;
+            }            
         }
     }
 
